@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>조부모 관리</title>
+
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/components.css">
+
+</head>
+
+<body>
+
+<div class="layout">
+
+    <!-- Sidebar -->
+    <div id="sidebar"></div>
+
+    <!-- Main -->
+    <main class="main">
+
+        <!-- Header -->
+        <div id="header"></div>
+
+        <!-- Content -->
+        <section class="content">
+
+            <div class="page-card">
+
+                <div class="page-toolbar">
+
+                    <h2>조부모 관리</h2>
+
+                    <button
+                        id="btnAddGrandparent"
+                        class="btn btn-primary">
+
+                        + 등록
+
+                    </button>
+
+                </div>
+
+                <div class="search-area">
+
+                    <input
+                        type="text"
+                        id="searchKeyword"
+                        class="input"
+                        placeholder="성명을 입력하세요">
+
+                    <button
+                        id="btnSearch"
+                        class="btn">
+
+                        검색
+
+                    </button>
+
+                </div>
+
+                <table class="table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th width="80">번호</th>
+                            <th>성명</th>
+                            <th>생년월일</th>
+                            <th>연락처</th>
+                            <th>상태</th>
+                            <th width="180">관리</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="grandparentTable">
+
+                        <tr>
+
+                            <td colspan="6" class="empty-row">
+
+                                불러오는 중...
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+<!-- JS -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="../../shared/supabase.js"></script>
+<script src="../../shared/constants.js"></script>
+
+<script src="../js/modal.js"></script>
+<script src="../js/layout.js"></script>
+
+<script src="./grandparents-form.js"></script>
+<script src="./grandparents.js"></script>
+
+</body>
+
+</html>

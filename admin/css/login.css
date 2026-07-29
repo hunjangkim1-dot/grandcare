@@ -1,0 +1,114 @@
+/* admin/css/login.css */
+
+.login-container{
+
+    width:100%;
+    height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+}
+
+.login-box{
+
+    width:420px;
+
+    background:#fff;
+
+    border-radius:10px;
+
+    padding:40px;
+
+    box-shadow:0 8px 30px rgba(0,0,0,.08);
+
+}
+
+.login-box h1{
+
+    text-align:center;
+
+    color:#005BAC;
+
+    margin-bottom:12px;
+
+    font-size:34px;
+
+}
+
+.system-title{
+
+    text-align:center;
+
+    color:#666;
+
+    margin-bottom:40px;
+
+    font-size:16px;
+
+}
+
+.form-group{
+
+    margin-bottom:20px;
+
+}
+
+.form-group label{
+
+    display:block;
+
+    margin-bottom:8px;
+
+    font-weight:600;
+
+}
+
+.form-group input{
+
+    width:100%;
+    height:46px;
+
+    border:1px solid #D5D5D5;
+
+    border-radius:6px;
+
+    padding:0 14px;
+
+}
+
+.form-group input:focus{
+
+    outline:none;
+
+    border-color:#005BAC;
+
+}
+
+#loginBtn{
+
+    width:100%;
+    height:48px;
+
+    border:none;
+
+    border-radius:6px;
+
+    background:#005BAC;
+
+    color:#fff;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    margin-top:10px;
+
+}
+
+#loginBtn:hover{
+
+    background:#00488B;
+
+}
