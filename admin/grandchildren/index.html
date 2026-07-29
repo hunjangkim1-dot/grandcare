@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>손주 관리</title>
+
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/components.css">
+
+</head>
+
+<body>
+
+<div class="layout">
+
+    <!-- Sidebar -->
+    <div id="sidebar"></div>
+
+    <!-- Main -->
+    <main class="main">
+
+        <!-- Header -->
+        <div id="header"></div>
+
+        <!-- Content -->
+        <section class="content">
+
+            <div class="page-card">
+
+                <div class="page-toolbar">
+
+                    <h2>손주 관리</h2>
+
+                    <button
+                        id="btnAddGrandchild"
+                        class="btn btn-primary">
+
+                        + 등록
+
+                    </button>
+
+                </div>
+
+                <div class="search-area">
+
+                    <input
+                        type="text"
+                        id="searchKeyword"
+                        class="input"
+                        placeholder="손주 성명을 입력하세요">
+
+                    <button
+                        id="btnSearch"
+                        class="btn">
+
+                        검색
+
+                    </button>
+
+                </div>
+
+                <table class="table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th width="70">번호</th>
+                            <th>성명</th>
+                            <th>생년월일</th>
+                            <th>성별</th>
+                            <th>조부모</th>
+                            <th>관계</th>
+                            <th>어린이집/유치원</th>
+                            <th>상태</th>
+                            <th width="180">관리</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="grandchildTable">
+
+                        <tr>
+
+                            <td colspan="9" class="empty-row">
+
+                                불러오는 중...
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+<!-- JS -->
+
+<script>
+console.log("index 시작");
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="../../shared/supabase.js"></script>
+<script src="../../shared/constants.js"></script>
+
+<script src="../js/modal.js"></script>
+<script src="../js/layout.js"></script>
+
+<script src="./grandchildren-form.js"></script>
+<script src="./grandchildren.js"></script>
+
+<script>
+console.log("index 끝");
+</script>
+
+</body>
+
+</html>

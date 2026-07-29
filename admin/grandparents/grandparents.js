@@ -70,6 +70,8 @@ async function loadGrandparents() {
 
         if (error) throw error;
 
+        window.grandparents = data;
+
         grandparentList = data ?? [];
 
         renderTable(grandparentList);
@@ -92,37 +94,80 @@ async function loadGrandparents() {
 
 }
 
-/* ======================================
-   검색
-====================================== */
+// ======================================================
+// 검색
+// ======================================================
 
-function searchGrandparents() {
+document
+
+    .getElementById("searchKeyword")
+
+    .addEventListener("keydown", e => {
+
+        if (e.key === "Enter") {
+
+            searchGrandparents();
+
+        }
+
+    });
+window.searchGrandparents = function () {
 
     const keyword = document
+
         .getElementById("searchKeyword")
+
         .value
+
         .trim()
+
         .toLowerCase();
 
     if (!keyword) {
 
-        renderTable(grandparentList);
+        renderTable(window.grandparents);
 
         return;
 
     }
 
-    const result = grandparentList.filter(item =>
+    const filtered = window.grandparents.filter(item => {
 
-        (item.name ?? "")
-            .toLowerCase()
-            .includes(keyword)
+        return (
 
-    );
+            (item.name ?? "")
+                .toLowerCase()
+                .includes(keyword)
 
-    renderTable(result);
+            ||
 
-}
+            (item.phone ?? "")
+                .includes(keyword)
+
+            ||
+
+            (item.birth ?? "")
+                .includes(keyword)
+
+            ||
+
+            (item.address ?? "")
+                .toLowerCase()
+                .includes(keyword)
+
+            ||
+
+            (item.account_holder ?? "")
+                .toLowerCase()
+                .includes(keyword)
+
+        );
+
+    });
+
+    renderTable(filtered);
+
+};
 
 /* ======================================
    출력
@@ -237,3 +282,50 @@ async function deleteGrandparent(id) {
     }
 
 }
+
+// ======================================================
+// 조부모 수정
+// ======================================================
+
+window.editGrandparent = async function (id) {
+
+    try {
+
+        const {
+
+            data,
+
+            error
+
+        } = await window.supabaseClient
+
+            .from("grandparents")
+
+            .select("*")
+
+            .eq("id", id)
+
+            .single();
+
+        if (error)
+            throw error;
+
+        openRegisterForm(data);
+
+    }
+
+    catch (err) {
+
+        console.error(err);
+
+        alert(
+
+            "정보를 불러오는 중 오류가 발생했습니다.\n\n"
+
+            + err.message
+
+        );
+
+    }
+
+};

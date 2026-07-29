@@ -4,11 +4,15 @@
 // grandparents-form.js
 // ======================================================
 
-window.openRegisterForm = function () {
+window.openRegisterForm = function (grandparent = null) {
+
+    const isEdit = grandparent !== null;
 
     Modal.open(
 
-        "조부모 등록",
+        isEdit
+            ? "조부모 정보 수정"
+            : "조부모 등록",
 
         `
         <div class="form-section">
@@ -134,13 +138,13 @@ window.openRegisterForm = function () {
 
             </button>
 
-            <button
-                id="btnSave"
-                class="btn btn-primary">
+           <button
+    id="btnSave"
+    class="btn btn-primary">
 
-                저장
+    ${isEdit ? "수정" : "저장"}
 
-            </button>
+</button>
 
         </div>
 
@@ -173,7 +177,37 @@ window.openRegisterForm = function () {
         `;
 
     });
+// ==========================
+// 수정모드 데이터 표시
+// ==========================
 
+if (isEdit) {
+
+    document.getElementById("gp-name").value =
+        grandparent.name ?? "";
+
+    document.getElementById("gp-birth").value =
+        grandparent.birth ?? "";
+
+    document.getElementById("gp-phone").value =
+        grandparent.phone ?? "";
+
+    document.getElementById("gp-address").value =
+        grandparent.address ?? "";
+
+    document.getElementById("gp-bank-code").value =
+        grandparent.bank_code ?? "";
+
+    document.getElementById("gp-account").value =
+        grandparent.account ?? "";
+
+    document.getElementById("gp-account-holder").value =
+        grandparent.account_holder ?? "";
+
+    document.getElementById("gp-status").value =
+        grandparent.status ?? "active";
+
+}
 
 
     // ==========================
@@ -247,19 +281,26 @@ window.openRegisterForm = function () {
 
 
 
-    document
+   document
 
-        .getElementById("btnSave")
+    .getElementById("btnSave")
 
-        .addEventListener("click", saveGrandparent);
+    .addEventListener("click", () => {
 
-};
+        saveGrandparent(grandparent);
 
+    });
 // ======================================================
 // 저장
 // ======================================================
 
-window.saveGrandparent = async function () {
+// ======================================================
+// 저장(등록 / 수정)
+// ======================================================
+
+window.saveGrandparent = async function (grandparent = null) {
+
+    const isEdit = grandparent !== null;
 
     const name =
         document.getElementById("gp-name").value.trim();
@@ -285,87 +326,48 @@ window.saveGrandparent = async function () {
     const status =
         document.getElementById("gp-status").value;
 
-
-
-    // ==========================
-    // 필수값 검사
-    // ==========================
-
     if (!name) {
-
         alert("성명을 입력하세요.");
-
         document.getElementById("gp-name").focus();
-
         return;
-
     }
 
     if (!birth) {
-
         alert("생년월일을 입력하세요.");
-
         document.getElementById("gp-birth").focus();
-
         return;
-
     }
 
     if (!bankCode) {
-
         alert("금융기관을 선택하세요.");
-
         document.getElementById("gp-bank-code").focus();
-
         return;
-
     }
 
     if (!account) {
-
         alert("계좌번호를 입력하세요.");
-
         document.getElementById("gp-account").focus();
-
         return;
-
     }
 
     if (!accountHolder) {
-
         alert("예금주를 입력하세요.");
-
         document.getElementById("gp-account-holder").focus();
-
         return;
-
     }
-
-
-
-    // ==========================
-    // 저장버튼 비활성화
-    // ==========================
 
     const btn =
         document.getElementById("btnSave");
 
     btn.disabled = true;
 
-    btn.textContent = "저장중...";
-
-
+    btn.textContent =
+        isEdit ? "수정중..." : "저장중...";
 
     try {
 
-        // ==========================
-        // 중복 검사
-        // 성명 + 생년월일
-        // ==========================
-
-        const { data: duplicated, error: duplicateError }
-
-            = await window.supabaseClient
+        let query =
+            window.supabaseClient
 
                 .from("grandparents")
 
@@ -373,9 +375,22 @@ window.saveGrandparent = async function () {
 
                 .eq("name", name)
 
-                .eq("birth", birth)
+                .eq("birth", birth);
 
-                .limit(1);
+        if (isEdit) {
+
+            query =
+                query.neq("id", grandparent.id);
+
+        }
+
+        const {
+
+            data: duplicated,
+
+            error: duplicateError
+
+        } = await query.limit(1);
 
         if (duplicateError)
             throw duplicateError;
@@ -386,57 +401,116 @@ window.saveGrandparent = async function () {
 
             btn.disabled = false;
 
-            btn.textContent = "저장";
+            btn.textContent =
+                isEdit ? "수정" : "저장";
 
             return;
 
         }
 
-
-
-        // ==========================
-        // QR 생성
-        // ==========================
-
-        const qrCode =
-            "HDG-" +
-
-            crypto.randomUUID()
-
-                .replaceAll("-", "")
-
-                .substring(0, 8)
-
-                .toUpperCase();
-
-
-
-        // ==========================
-        // 저장 데이터
-        // ==========================
-
         const row = {
 
-            qr_code: qrCode,
+            name,
 
-            name: name,
+            birth,
 
-            birth: birth,
+            phone,
 
-            phone: phone,
-
-            address: address,
+            address,
 
             bank_code: bankCode,
 
-            account: account,
+            account,
 
             account_holder: accountHolder,
 
-            status: status
+            status
 
         };
 
+        if (isEdit) {
+
+            const { error } =
+                await window.supabaseClient
+
+                    .from("grandparents")
+
+                    .update(row)
+
+                    .eq("id", grandparent.id);
+
+            if (error)
+                throw error;
+
+        }
+
+        else {
+
+            const qrCode =
+                "HDG-" +
+
+                crypto.randomUUID()
+
+                    .replaceAll("-", "")
+
+                    .substring(0, 8)
+
+                    .toUpperCase();
+
+            row.qr_code = qrCode;
+
+            const { error } =
+                await window.supabaseClient
+
+                    .from("grandparents")
+
+                    .insert([row]);
+
+            if (error)
+                throw error;
+
+        }
+
+        Modal.close();
+
+        await loadGrandparents();
+
+        alert(
+
+            isEdit
+
+                ? "조부모 정보가 수정되었습니다."
+
+                : "조부모가 등록되었습니다."
+
+        );
+
+    }
+
+    catch (err) {
+
+        console.error(err);
+
+        alert(
+
+            "저장 중 오류가 발생했습니다.\n\n"
+
+            + err.message
+
+        );
+
+    }
+
+    finally {
+
+        btn.disabled = false;
+
+        btn.textContent =
+            isEdit ? "수정" : "저장";
+
+    }
+
+};
                 // ==========================
         // Supabase 저장
         // ==========================

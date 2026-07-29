@@ -1,0 +1,1 @@
+console.log("activities-form.js loaded");
