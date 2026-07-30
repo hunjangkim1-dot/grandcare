@@ -511,54 +511,5 @@ window.saveGrandparent = async function (grandparent = null) {
     }
 
 };
-                // ==========================
-        // Supabase 저장
-        // ==========================
-
-        const { error } = await window.supabaseClient
-
-            .from("grandparents")
-
-            .insert([row]);
-
-        if (error)
-            throw error;
-
-
-
-        // ==========================
-        // 저장 완료
-        // ==========================
-
-        Modal.close();
-
-        await loadGrandparents();
-
-        alert("조부모가 등록되었습니다.");
-
-    }
-
-    catch (err) {
-
-        console.error(err);
-
-        alert(
-
-            "저장 중 오류가 발생했습니다.\n\n" +
-
-            err.message
-
-        );
-
-    }
-
-    finally {
-
-        btn.disabled = false;
-
-        btn.textContent = "저장";
-
-    }
-
-};
-
+               
+}

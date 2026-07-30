@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>활동 관리</title>
+
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/components.css">
+
+</head>
+
+<body>
+
+<div class="layout">
+
+    <!-- Sidebar -->
+    <div id="sidebar"></div>
+
+    <!-- Main -->
+    <main class="main">
+
+        <!-- Header -->
+        <div id="header"></div>
+
+        <!-- Content -->
+        <section class="content">
+
+            <div class="page-card">
+
+                <div class="page-toolbar">
+
+                    <h2>활동 관리</h2>
+
+                    <button
+                        id="btnAddActivity"
+                        class="btn btn-primary">
+
+                        + 등록
+
+                    </button>
+
+                </div>
+
+                <div class="search-area">
+
+                    <input
+                        type="date"
+                        id="startDate"
+                        class="input">
+
+                    <span style="padding:0 8px;">~</span>
+
+                    <input
+                        type="date"
+                        id="endDate"
+                        class="input">
+
+                    <select
+                        id="searchGrandparent"
+                        class="input">
+
+                        <option value="">전체 조부모</option>
+
+                    </select>
+
+                    <button
+                        id="btnSearch"
+                        class="btn">
+
+                        검색
+
+                    </button>
+
+                </div>
+
+                <table class="table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th width="120">활동일</th>
+                            <th>조부모</th>
+                            <th>손주</th>
+                            <th>기관</th>
+                            <th width="90">시작</th>
+                            <th width="90">종료</th>
+                            <th width="90">시간</th>
+                            <th width="180">관리</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="activityTable">
+
+                        <tr>
+
+                            <td colspan="8" class="empty-row">
+
+                                불러오는 중...
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="../../shared/supabase.js"></script>
+<script src="../../shared/constants.js"></script>
+
+<script src="../js/modal.js"></script>
+<script src="../js/layout.js"></script>
+
+<script src="./activities-form.js"></script>
+<script src="./activities.js"></script>
+
+</body>
+
+</html>
