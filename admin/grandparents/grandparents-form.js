@@ -357,13 +357,11 @@ window.saveGrandparent = async function (grandparent = null) {
     }
 
     const btn =
-        document.getElementById("btnSave");
+document.getElementById("gc-modal-confirm");
 
-    btn.disabled = true;
+btn.disabled = true;
 
-    btn.textContent =
-        isEdit ? "수정중..." : "저장중...";
-
+btn.textContent = "저장중...";
     try {
 
         let query =
@@ -503,10 +501,12 @@ window.saveGrandparent = async function (grandparent = null) {
 
     finally {
 
-        btn.disabled = false;
+       btn.disabled = false;
 
-        btn.textContent =
-            isEdit ? "수정" : "저장";
+btn.textContent =
+currentActivityId
+? "수정"
+: "저장";
 
     }
 

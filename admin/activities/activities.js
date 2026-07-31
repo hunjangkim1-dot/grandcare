@@ -103,8 +103,33 @@ tbody.innerHTML = `
             <td>${item.duration_minutes}분</td>
 
             <td>
-                수정 / 삭제
-            </td>
+
+<button
+    class="btn btn-sm"
+    onclick="editActivity(${item.id})">
+
+    수정
+
+</button>
+
+<button
+    class="btn btn-danger btn-sm"
+    onclick="deleteActivity(${item.id})">
+
+    삭제
+
+</button>
+
+<button
+    class="btn btn-primary btn-sm"
+    onclick="showQRCode(${item.id})">
+
+QR
+
+</button>
+
+</td>
+</td>
 
         </tr>
     `).join("");
@@ -121,3 +146,27 @@ document.addEventListener("DOMContentLoaded", () => {
         .addEventListener("click", openActivityForm);
 
 });
+
+window.deleteActivity = async function(id){
+
+    if(!confirm("삭제하시겠습니까?")) return;
+
+    const { error } = await supabaseClient
+
+        .from("activities")
+
+        .delete()
+
+        .eq("id",id);
+
+    if(error){
+
+        alert(error.message);
+
+        return;
+
+    }
+
+    loadActivities();
+
+}

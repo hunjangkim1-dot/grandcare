@@ -329,3 +329,65 @@ window.editGrandparent = async function (id) {
     }
 
 };
+window.showQRCode = async function(id){
+
+    const { data, error } = await supabaseClient
+
+        .from("grandparents")
+
+        .select("name, qr_token")
+
+        .eq("id", id)
+
+        .single();
+
+    if(error){
+
+        alert(error.message);
+
+        return;
+
+    }
+
+    Modal.open({
+
+        title: data.name + " QR",
+
+        body: `
+
+            <div
+                id="qrArea"
+                style="display:flex;
+                       justify-content:center;
+                       padding:20px;">
+            </div>
+
+        `,
+
+        confirmText:"닫기",
+
+        cancelText:"",
+
+        onConfirm:()=>Modal.close()
+
+    });
+
+    new QRCode(
+
+        document.getElementById("qrArea"),
+
+        {
+            text:
+                location.origin +
+                "/grandCare/mobile/checkin.html?token=" +
+                data.qr_token,
+
+            width:220,
+
+            height:220
+
+        }
+
+    );
+
+}
