@@ -15,21 +15,55 @@ document.addEventListener("DOMContentLoaded", () => {
 async function loadActivities() {
 
     const tbody = document.getElementById("activityTable");
+const startDate =
+    document.getElementById("searchStartDate").value;
 
+const endDate =
+    document.getElementById("searchEndDate").value;
+
+const grandparentId =
+    document.getElementById("searchGrandparent").value;
     tbody.innerHTML = `
         <tr>
             <td colspan="8">불러오는 중...</td>
         </tr>
     `;
 
-    const { data, error } = await supabaseClient
+    let query =
+    supabaseClient
         .from("activities")
         .select(`
             *,
             grandparents(name),
             grandchildren(name, daycare_name)
-        `)
-        .order("activity_date", { ascending: false });
+        `);
+
+if (startDate) {
+
+    query =
+        query.gte("activity_date", startDate);
+
+}
+
+if (endDate) {
+
+    query =
+        query.lte("activity_date", endDate);
+
+}
+
+if (grandparentId) {
+
+    query =
+        query.eq("grandparent_id", grandparentId);
+
+}
+
+const { data, error } =
+    await query.order(
+        "activity_date",
+        { ascending: false }
+    );
 
     if (error) {
 
@@ -57,35 +91,7 @@ function renderTable(data) {
 
     const tbody = document.getElementById("activityTable");
 
-    if (data.length === 0) {
-
-       tbody.innerHTML = `
-<tr>
-    <td colspan="8">
-        불러오는 중...
-    </td>
-</tr>
-`;
-
-tbody.innerHTML = `
-<tr>
-    <td colspan="8" class="empty-row">
-        데이터를 불러오지 못했습니다.
-    </td>
-</tr>
-`;
-
-tbody.innerHTML = `
-<tr>
-<td colspan="8">
-등록된 활동이 없습니다.
-</td>
-</tr>
-`;
-
-        return;
-
-    }
+    if (data.length === 
 
     tbody.innerHTML = data.map(item => `
         <tr>
@@ -120,15 +126,7 @@ tbody.innerHTML = `
 
 </button>
 
-<button
-    class="btn btn-primary btn-sm"
-    onclick="showQRCode(${item.id})">
 
-QR
-
-</button>
-
-</td>
 </td>
 
         </tr>
@@ -138,7 +136,12 @@ QR
 
 
 document.addEventListener("DOMContentLoaded", () => {
-
+document
+    .getElementById("btnSearch")
+    .addEventListener(
+        "click",
+        loadActivities
+    );
     loadActivities();
 
     document
