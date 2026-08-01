@@ -2,7 +2,12 @@ console.log("checkin.js loaded");
 
 document.addEventListener("DOMContentLoaded", init);
 
+// =========================================
+// 전역변수
+// =========================================
+
 let grandparent = null;
+let grandchild = null;
 let todayActivity = null;
 
 // =========================================
@@ -23,13 +28,19 @@ async function init() {
 
     }
 
-    // -----------------------------
-    // 조부모 조회
-    // -----------------------------
+    // =====================================
+    // 손주 조회 (QR)
+    // =====================================
 
-    const { data, error } = await supabaseClient
+    const {
 
-        .from("grandparents")
+        data: child,
+
+        error: childError
+
+    } = await supabaseClient
+
+        .from("grandchildren")
 
         .select("*")
 
@@ -37,38 +48,90 @@ async function init() {
 
         .single();
 
-    if (error || !data) {
+    if (childError || !child) {
 
         alert("QR 정보가 없습니다.");
 
-        console.error(error);
+        console.error(childError);
 
         return;
 
     }
 
-    grandparent = data;
+    grandchild = child;
 
-    // -----------------------------
+    // =====================================
+    // 조부모 조회
+    // =====================================
+
+    const {
+
+        data: gp,
+
+        error: gpError
+
+    } = await supabaseClient
+
+        .from("grandparents")
+
+        .select("*")
+
+        .eq("id", grandchild.grandparent_id)
+
+        .single();
+
+    if (gpError || !gp) {
+
+        alert("조부모 정보를 찾을 수 없습니다.");
+
+        console.error(gpError);
+
+        return;
+
+    }
+
+    grandparent = gp;
+
+    // =====================================
     // 오늘 활동 조회
-    // -----------------------------
+    // =====================================
 
     const today =
-        new Date().toISOString().slice(0, 10);
+        new Date()
+            .toISOString()
+            .slice(0, 10);
 
-    const result = await supabaseClient
+    const {
+
+        data,
+
+        error
+
+    } = await supabaseClient
 
         .from("activities")
 
         .select("*")
 
-        .eq("grandparent_id", grandparent.id)
+        .eq("grandchild_id", grandchild.id)
 
         .eq("activity_date", today)
 
         .maybeSingle();
 
-    todayActivity = result.data;
+    if (error) {
+
+        console.error(error);
+
+    }
+
+    todayActivity = data;
+
+
+
+        // =====================================
+    // 화면 표시
+    // =====================================
 
     const info =
         document.getElementById("info");
@@ -80,13 +143,15 @@ async function init() {
 
         info.innerHTML = `
 
-            <h3>${grandparent.name}</h3>
+            <h2>${grandparent.name}</h2>
+
+            <p><strong>손주</strong> : ${grandchild.name}</p>
 
             <p>오늘 활동을 시작합니다.</p>
 
         `;
 
-        btn.textContent = "활동 종료";
+        btn.textContent = "활동 시작";
 
     }
 
@@ -94,9 +159,11 @@ async function init() {
 
         info.innerHTML = `
 
-            <h3>${grandparent.name}</h3>
+            <h2>${grandparent.name}</h2>
 
-            <p>활동을 종료합니다.</p>
+            <p><strong>손주</strong> : ${grandchild.name}</p>
+
+            <p>오늘 활동을 종료합니다.</p>
 
         `;
 
@@ -104,24 +171,25 @@ async function init() {
 
     }
 
-    
+    btn.style.display = "inline-block";
+
+    btn.disabled = false;
 
     btn.onclick = saveActivity;
 
 }
 
 // =========================================
-// 체크인 / 체크아웃
-// =========================================
-// =========================================
 // 활동시간 계산
 // =========================================
 
 function calcMinutes(start, end) {
 
-    const [sh, sm] = start.split(":").map(Number);
+    const [sh, sm] =
+        start.split(":").map(Number);
 
-    const [eh, em] = end.split(":").map(Number);
+    const [eh, em] =
+        end.split(":").map(Number);
 
     let diff =
         (eh * 60 + em) -
@@ -136,6 +204,7 @@ function calcMinutes(start, end) {
     return diff;
 
 }
+
 // =========================================
 // 체크인 / 체크아웃
 // =========================================
@@ -146,10 +215,6 @@ async function saveActivity() {
         document.getElementById("btnAction");
 
     btn.disabled = true;
-
-    // -----------------------------
-    // GPS
-    // -----------------------------
 
     navigator.geolocation.getCurrentPosition(
 
@@ -170,9 +235,9 @@ async function saveActivity() {
             const time =
                 now.toTimeString().substring(0, 8);
 
-            // =============================
+            // =====================================
             // 체크인
-            // =============================
+            // =====================================
 
             if (!todayActivity) {
 
@@ -185,23 +250,34 @@ async function saveActivity() {
 
                             activity_date: today,
 
-                            grandparent_id: grandparent.id,
+                            grandparent_id:
+                                grandparent.id,
 
-                            start_time: time,
+                            grandchild_id:
+                                grandchild.id,
 
-                            duration_minutes: 0,
+                            start_time:
+                                time,
 
-                            checkin_lat: lat,
+                            checkin_time:
+                                now.toISOString(),
 
-                            checkin_lng: lng
+                            duration_minutes:
+                                0,
+
+                            checkin_lat:
+                                lat,
+
+                            checkin_lng:
+                                lng
 
                         });
 
                 if (error) {
 
-                    alert(error.message);
-
                     console.error(error);
+
+                    alert(error.message);
 
                     btn.disabled = false;
 
@@ -209,7 +285,7 @@ async function saveActivity() {
 
                 }
 
-                alert("체크인 완료");
+                alert("체크인이 완료되었습니다.");
 
                 location.reload();
 
@@ -217,9 +293,9 @@ async function saveActivity() {
 
             }
 
-            // =============================
+                        // =====================================
             // 체크아웃
-            // =============================
+            // =====================================
 
             const duration =
                 calcMinutes(
@@ -234,23 +310,33 @@ async function saveActivity() {
 
                     .update({
 
-                        end_time: time,
+                        end_time:
+                            time,
 
-                        duration_minutes: duration,
+                        checkout_time:
+                            now.toISOString(),
 
-                        checkout_lat: lat,
+                        duration_minutes:
+                            duration,
 
-                        checkout_lng: lng
+                        checkout_lat:
+                            lat,
+
+                        checkout_lng:
+                            lng
 
                     })
 
-                    .eq("id", todayActivity.id);
+                    .eq(
+                        "id",
+                        todayActivity.id
+                    );
 
             if (error) {
 
-                alert(error.message);
-
                 console.error(error);
+
+                alert(error.message);
 
                 btn.disabled = false;
 
@@ -258,7 +344,7 @@ async function saveActivity() {
 
             }
 
-            alert("체크아웃 완료");
+            alert("체크아웃이 완료되었습니다.");
 
             location.reload();
 
@@ -266,13 +352,15 @@ async function saveActivity() {
 
         (err) => {
 
-            alert("위치 권한을 허용해주세요.");
-
             console.error(err);
+
+            alert("위치 권한을 허용해주세요.");
 
             btn.disabled = false;
 
         },
+
+                   
 
         {
 
