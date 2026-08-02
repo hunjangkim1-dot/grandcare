@@ -1,9 +1,13 @@
 // admin/js/layout.js
 
 document.addEventListener("DOMContentLoaded", async () => {
-    await loadComponent("sidebar", "../components/sidebar.html");
-await loadComponent("header", "../components/header.html");
-await loadComponent("modal", "../components/modal.html");
+   const basePath = location.pathname.includes("/grandCare/")
+    ? "/grandCare/admin/components/"
+    : "../components/";
+
+await loadComponent("sidebar", basePath + "sidebar.html");
+await loadComponent("header", basePath + "header.html");
+await loadComponent("modal", basePath + "modal.html");
 
 Modal.init();
     setActiveMenu();

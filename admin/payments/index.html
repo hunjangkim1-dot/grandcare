@@ -1,185 +1,281 @@
-<section class="content">
+<!DOCTYPE html>
+<html lang="ko">
 
-    <div class="page-card">
+<head>
 
-        <div class="page-header">
+    <meta charset="UTF-8">
 
-            <h2>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
-                지급관리
+    <title>지급 관리</title>
 
-            </h2>
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="./payments.css">
 
-        </div>
+</head>
 
-        <div class="search-area">
+<body>
 
-            <div class="search-group">
+<div class="layout">
 
-                <label>
+    <!-- Sidebar -->
+    <div id="sidebar"></div>
 
-                    지급월
+    <!-- Main -->
+    <main class="main">
 
-                </label>
+        <!-- Header -->
+        <div id="header"></div>
 
-                <input
+        <!-- Content -->
+        <section class="content">
 
-                    type="month"
+            <div class="page-card">
 
-                    id="paymentMonth"
+                <div class="page-toolbar">
 
-                    class="input">
+                    <h2>
+
+                        지급 관리
+
+                    </h2>
+
+                    <div class="toolbar-right">
+
+                        <button
+                            id="btnDownloadExcel"
+                            class="btn btn-success">
+
+                            CUSTFORM 엑셀
+
+                        </button>
+
+                        <button
+                            id="btnDownloadPdf"
+                            class="btn btn-primary">
+
+                            월별 보고서
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <div class="search-area">
+
+                    <label>
+
+                        지급월
+
+                    </label>
+
+                    <input
+                        type="month"
+                        id="paymentMonth"
+                        class="input">
+
+                    <select
+                        id="paymentFilter"
+                        class="input">
+
+                        <option value="all">
+
+                            전체
+
+                        </option>
+
+                        <option value="eligible">
+
+                            지급 대상
+
+                        </option>
+
+                        <option value="excluded">
+
+                            제외 대상
+
+                        </option>
+
+                    </select>
+
+                    <button
+                        id="btnSearch"
+                        class="btn">
+
+                        조회
+
+                    </button>
+
+                </div>
+
+                           
+
+                   
+
+            </div>
+                <div class="summary-grid">
+
+                    <div class="summary-card">
+
+                        <div class="summary-title">
+
+                            신청 대상
+
+                        </div>
+
+                        <div
+                            id="summaryApplicant"
+                            class="summary-value">
+
+                            0명
+
+                        </div>
+
+                    </div>
+
+                    <div class="summary-card">
+
+                        <div class="summary-title">
+
+                            지급 대상
+
+                        </div>
+
+                        <div
+                            id="summaryEligible"
+                            class="summary-value">
+
+                            0명
+
+                        </div>
+
+                    </div>
+
+                    <div class="summary-card">
+
+                        <div class="summary-title">
+
+                            제외 대상
+
+                        </div>
+
+                        <div
+                            id="summaryExcluded"
+                            class="summary-value">
+
+                            0명
+
+                        </div>
+
+                    </div>
+
+                    <div class="summary-card">
+
+                        <div class="summary-title">
+
+                            지급 예정액
+
+                        </div>
+
+                        <div
+                            id="summaryAmount"
+                            class="summary-value">
+
+                            0원
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <table class="table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>조부모</th>
+
+                            <th>실제 돌본 손주</th>
+
+                            <th width="110">
+
+                                총 활동시간
+
+                            </th>
+
+                            <th width="110">
+
+                                충족 여부
+
+                            </th>
+
+                            <th width="120">
+
+                                지급금액
+
+                            </th>
+
+                            <th width="130">
+
+                                은행
+
+                            </th>
+
+                            <th width="180">
+
+                                계좌번호
+
+                            </th>
+
+                            <th width="120">
+
+                                예금주
+
+                            </th>
+
+                            <th>
+
+                                제외사유
+
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="paymentTable">
+
+                        <tr>
+
+                            <td
+                                colspan="9"
+                                class="empty-row">
+
+                                조회된 지급대상이 없습니다.
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
 
             </div>
 
-            <div class="search-group">
-
-                <label>
-
-                    지급대상
-
-                </label>
-
-                <select
-
-                    id="paymentFilter"
-
-                    class="input">
-
-                    <option value="all">
-
-                        전체
-
-                    </option>
-
-                    <option value="eligible">
-
-                        지급대상만
-
-                    </option>
-
-                    <option value="excluded">
-
-                        지급제외만
-
-                    </option>
-
-                </select>
-
-            </div>
-
-            <button
-
-                id="btnSearch"
-
-                class="btn">
-
-                조회
-
-            </button>
-
-        </div>
-
-    </div>
-
-        <div class="page-card">
-
-        <table class="table">
-
-            <thead>
-
-                <tr>
-
-                    <th>조부모</th>
-<th>실제 돌본 손주</th>
-<th>총 활동시간</th>
-<th>충족여부</th>
-<th>지급금액</th>
-<th>은행</th>
-<th>계좌번호</th>
-<th>예금주</th>
-<th>제외사유</th>
-
-                </tr>
-
-            </thead>
-
-            <tbody id="paymentTable">
-
-                <tr>
-
-                    <td colspan="7" class="empty-row">
-
-                        조회된 지급대상이 없습니다.
-
-                    </td>
-
-                </tr>
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-        <div class="page-card">
-
-        <table class="table">
-
-            <thead>
-
-                <tr>
-
-                    <th>조부모</th>
-
-                    <th>손주수</th>
-
-                    <th>총 활동시간</th>
-
-                    <th>충족여부</th>
-
-                    <th>지급금액</th>
-
-                    <th>은행</th>
-
-                    <th>계좌번호</th>
-
-                    <th>예금주</th>
-
-                </tr>
-
-            </thead>
-
-            <tbody id="paymentTable">
-
-                <tr>
-
-                    <td colspan="7" class="empty-row">
-
-                        조회된 지급대상이 없습니다.
-
-                    </td>
-
-                </tr>
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-    </section>
-
-    </main>
-
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+            <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script src="../../shared/supabase.js"></script>
+<script src="../../shared/constants.js"></script>
+
+<script src="../js/modal.js"></script>
+<script src="../js/layout.js"></script>
 
 <script src="./payments.js"></script>
-
-</body>
-
-</html>
