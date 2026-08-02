@@ -91,11 +91,27 @@
 
     flex:1;
 
-    display:flex;
+    min-width:0;
 
-    flex-direction:column;
+    overflow-x:hidden;
 
-    background:#F4F6F9;
+}
+
+.content{
+
+    width:100%;
+
+    min-width:0;
+
+}
+
+.page-card{
+
+    width:100%;
+
+    max-width:100%;
+
+    box-sizing:border-box;
 
 }
 
@@ -336,5 +352,83 @@
     color:#9CA3AF;
 
     padding:40px 0 !important;
+
+}
+
+.page-card{
+
+    width:100%;
+
+    overflow-x:auto;
+
+}
+
+.table{
+
+    width:100%;
+
+    min-width:unset;
+
+}
+
+.content{
+
+    overflow-x:hidden;
+
+}
+
+.main{
+
+    min-width:0;
+
+}
+
+/* ==========================
+   Page Header
+========================== */
+
+.page-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:24px;
+
+}
+
+.page-header .btn{
+
+    margin-right:12px;
+
+    flex-shrink:0;
+
+}
+
+/* ==========================
+   Page Toolbar
+========================== */
+
+.page-toolbar{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:24px;
+
+    width:100%;
+
+}
+
+.page-toolbar .btn{
+
+    margin-right:20px;
+
+    flex-shrink:0;
 
 }

@@ -1,0 +1,185 @@
+<section class="content">
+
+    <div class="page-card">
+
+        <div class="page-header">
+
+            <h2>
+
+                지급관리
+
+            </h2>
+
+        </div>
+
+        <div class="search-area">
+
+            <div class="search-group">
+
+                <label>
+
+                    지급월
+
+                </label>
+
+                <input
+
+                    type="month"
+
+                    id="paymentMonth"
+
+                    class="input">
+
+            </div>
+
+            <div class="search-group">
+
+                <label>
+
+                    지급대상
+
+                </label>
+
+                <select
+
+                    id="paymentFilter"
+
+                    class="input">
+
+                    <option value="all">
+
+                        전체
+
+                    </option>
+
+                    <option value="eligible">
+
+                        지급대상만
+
+                    </option>
+
+                    <option value="excluded">
+
+                        지급제외만
+
+                    </option>
+
+                </select>
+
+            </div>
+
+            <button
+
+                id="btnSearch"
+
+                class="btn">
+
+                조회
+
+            </button>
+
+        </div>
+
+    </div>
+
+        <div class="page-card">
+
+        <table class="table">
+
+            <thead>
+
+                <tr>
+
+                    <th>조부모</th>
+<th>실제 돌본 손주</th>
+<th>총 활동시간</th>
+<th>충족여부</th>
+<th>지급금액</th>
+<th>은행</th>
+<th>계좌번호</th>
+<th>예금주</th>
+<th>제외사유</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="paymentTable">
+
+                <tr>
+
+                    <td colspan="7" class="empty-row">
+
+                        조회된 지급대상이 없습니다.
+
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+        <div class="page-card">
+
+        <table class="table">
+
+            <thead>
+
+                <tr>
+
+                    <th>조부모</th>
+
+                    <th>손주수</th>
+
+                    <th>총 활동시간</th>
+
+                    <th>충족여부</th>
+
+                    <th>지급금액</th>
+
+                    <th>은행</th>
+
+                    <th>계좌번호</th>
+
+                    <th>예금주</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="paymentTable">
+
+                <tr>
+
+                    <td colspan="7" class="empty-row">
+
+                        조회된 지급대상이 없습니다.
+
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    </section>
+
+    </main>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="../../shared/supabase.js"></script>
+
+<script src="./payments.js"></script>
+
+</body>
+
+</html>

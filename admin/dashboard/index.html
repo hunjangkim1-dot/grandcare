@@ -90,25 +90,19 @@
 
         </header>
 
-        <section class="content">
+       <section class="content">
 
     <div class="dashboard-grid">
 
         <div class="dashboard-card">
 
-            <h3>등록된 조부모</h3>
+            <h3>등록 조부모</h3>
 
-            <div>
+            <div class="dashboard-number">
 
-                <span class="dashboard-value">
+                <span id="cardGrandparents">
 
-                    0
-
-                </span>
-
-                <span class="dashboard-unit">
-
-                    명
+                    0명
 
                 </span>
 
@@ -118,19 +112,13 @@
 
         <div class="dashboard-card">
 
-            <h3>등록된 손주</h3>
+            <h3>등록 손주</h3>
 
-            <div>
+            <div class="dashboard-number">
 
-                <span class="dashboard-value">
+                <span id="cardGrandchildren">
 
-                    0
-
-                </span>
-
-                <span class="dashboard-unit">
-
-                    명
+                    0명
 
                 </span>
 
@@ -142,17 +130,11 @@
 
             <h3>오늘 활동</h3>
 
-            <div>
+            <div class="dashboard-number">
 
-                <span class="dashboard-value">
+                <span id="cardTodayActivity">
 
-                    0
-
-                </span>
-
-                <span class="dashboard-unit">
-
-                    건
+                    0건
 
                 </span>
 
@@ -162,19 +144,13 @@
 
         <div class="dashboard-card">
 
-            <h3>이번 달 지급예정</h3>
+            <h3>이번달 활동</h3>
 
-            <div>
+            <div class="dashboard-number">
 
-                <span class="dashboard-value">
+                <span id="cardMonthActivity">
 
-                    0
-
-                </span>
-
-                <span class="dashboard-unit">
-
-                    원
+                    0건
 
                 </span>
 
@@ -184,57 +160,112 @@
 
     </div>
 
-    <div class="page-card">
+        <div class="dashboard-row">
 
-     <div class="page-card">
+        <!-- 총 활동시간 -->
 
-    <h3 class="section-title">
+        <div class="page-card">
 
-        최근 활동
+            <h3 class="section-title">
 
-    </h3>
+                총 활동시간
 
-    <table class="dashboard-table">
+            </h3>
 
-        <thead>
+            <div
+                id="totalDuration"
+                class="dashboard-big-number">
 
-            <tr>
+                0시간
 
-                <th>날짜</th>
-                <th>조부모</th>
-                <th>손주</th>
-                <th>활동내용</th>
-                <th>상태</th>
+            </div>
 
-            </tr>
+        </div>
 
-        </thead>
+        <!-- 오늘 체크인 -->
 
-        <tbody>
+        <div class="page-card">
 
-            <tr>
+            <h3 class="section-title">
 
-                <td colspan="5" class="empty-row">
+                오늘 체크인 중
 
-                    등록된 활동이 없습니다.
+            </h3>
 
-                </td>
+            <div
+                id="todayCheckinList">
 
-            </tr>
+                <div class="empty-row">
 
-        </tbody>
+                    현재 체크인 중인 활동이 없습니다.
 
-    </table>
+                </div>
 
-</div>
+            </div>
+
+        </div>
 
     </div>
 
-</section>
+    <div class="page-card">
+
+        <h3 class="section-title">
+
+            최근 활동
+
+        </h3>
+
+        <table class="dashboard-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>날짜</th>
+
+                    <th>조부모</th>
+
+                    <th>손주</th>
+
+                    <th>시작</th>
+
+                    <th>종료</th>
+
+                    <th>시간</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="recentActivityTable">
+
+                <tr>
+
+                    <td colspan="6" class="empty-row">
+
+                        불러오는 중...
+
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    </section>
 
     </main>
 
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="../../shared/supabase.js"></script>
+
+<script src="./dashboard.js"></script>
 
 </body>
 

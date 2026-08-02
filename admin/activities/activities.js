@@ -1,78 +1,175 @@
-// -----------------------------
+console.log("activities.js loaded");
+
+// =========================================
 // 초기 실행
-// -----------------------------
+// =========================================
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
 
-    loadActivities();
+    await loadGrandparentFilter();
+
+    await loadActivities();
+
+    document
+
+        .getElementById("btnSearch")
+
+        .addEventListener(
+
+            "click",
+
+            loadActivities
+
+        );
+
+    document
+
+        .getElementById("btnAddActivity")
+
+        .addEventListener(
+
+            "click",
+
+            openActivityForm
+
+        );
 
 });
 
-// -----------------------------
-// 목록 조회
-// -----------------------------
+// =========================================
+// 활동 목록 조회
+// =========================================
 
 async function loadActivities() {
 
-    const tbody = document.getElementById("activityTable");
-const startDate =
-    document.getElementById("searchStartDate").value;
+    const tbody =
 
-const endDate =
-    document.getElementById("searchEndDate").value;
+        document.getElementById("activityTable");
 
-const grandparentId =
-    document.getElementById("searchGrandparent").value;
     tbody.innerHTML = `
+
         <tr>
-            <td colspan="8">불러오는 중...</td>
+
+            <td colspan="7">
+
+                불러오는 중...
+
+            </td>
+
         </tr>
+
     `;
 
+    const startDate =
+    document
+        .getElementById("startDate")
+        .value;
+
+const endDate =
+    document
+        .getElementById("endDate")
+        .value;
+
+    const grandparentId =
+
+        document
+
+            .getElementById("searchGrandparent")
+
+            .value;
+
     let query =
-    supabaseClient
-        .from("activities")
-        .select(`
-            *,
-            grandparents(name),
-            grandchildren(name, daycare_name)
-        `);
 
-if (startDate) {
+        supabaseClient
 
-    query =
-        query.gte("activity_date", startDate);
+            .from("activities")
 
-}
+            .select(`
 
-if (endDate) {
+                *,
 
-    query =
-        query.lte("activity_date", endDate);
+                grandparents(name),
 
-}
+                grandchildren(name)
 
-if (grandparentId) {
+            `);
 
-    query =
-        query.eq("grandparent_id", grandparentId);
+                // =====================================
+    // 검색조건
+    // =====================================
 
-}
+    if (startDate) {
 
-const { data, error } =
-    await query.order(
-        "activity_date",
-        { ascending: false }
-    );
+        query =
+            query.gte(
+                "activity_date",
+                startDate
+            );
+
+    }
+
+    if (endDate) {
+
+        query =
+            query.lte(
+                "activity_date",
+                endDate
+            );
+
+    }
+
+    if (grandparentId) {
+
+        query =
+            query.eq(
+                "grandparent_id",
+                grandparentId
+            );
+
+    }
+
+    // =====================================
+    // 조회
+    // =====================================
+
+    const {
+
+        data,
+
+        error
+
+    } = await query
+
+        .order(
+            "activity_date",
+            {
+                ascending: false
+            }
+        )
+
+        .order(
+            "start_time",
+            {
+                ascending: false
+            }
+        );
 
     if (error) {
 
         console.error(error);
 
         tbody.innerHTML = `
+
             <tr>
-                <td colspan="8">데이터를 불러오지 못했습니다.</td>
+
+                <td colspan="7">
+
+                    데이터를 불러오지 못했습니다.
+
+                </td>
+
             </tr>
+
         `;
 
         return;
@@ -83,76 +180,173 @@ const { data, error } =
 
 }
 
-// -----------------------------
+// =========================================
 // 테이블 출력
-// -----------------------------
+// =========================================
 
 function renderTable(data) {
 
-    const tbody = document.getElementById("activityTable");
+    const tbody =
+        document.getElementById("activityTable");
 
-    if (data.length === 
+    if (data.length === 0) {
+
+        tbody.innerHTML = `
+
+            <tr>
+
+                <td colspan="7" class="empty-row">
+
+                    등록된 활동이 없습니다.
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
 
     tbody.innerHTML = data.map(item => `
+
         <tr>
-
-            <td>${item.activity_date}</td>
-
-            <td>${item.grandparents?.name ?? ""}</td>
-
-            <td>${item.grandchildren?.name ?? ""}</td>
-
-            <td>${item.start_time}</td>
-
-            <td>${item.end_time}</td>
-
-            <td>${item.duration_minutes}분</td>
 
             <td>
 
-<button
-    class="btn btn-sm"
-    onclick="editActivity(${item.id})">
+                ${item.activity_date}
 
-    수정
+            </td>
 
-</button>
+            <td>
 
-<button
-    class="btn btn-danger btn-sm"
-    onclick="deleteActivity(${item.id})">
+                ${item.grandparents?.name ?? ""}
 
-    삭제
+            </td>
 
-</button>
+            <td>
 
+                ${item.grandchildren?.name ?? ""}
 
-</td>
+            </td>
+
+            <td>
+
+                ${item.start_time?.substring(0,5) ?? ""}
+
+            </td>
+
+            <td>
+
+                ${item.end_time?.substring(0,5) ?? ""}
+
+            </td>
+
+            <td>
+
+                ${item.duration_minutes ?? 0}분
+
+            </td>
+
+            <td>
+
+                <button
+                    class="btn btn-sm"
+                    onclick="editActivity(${item.id})">
+
+                    수정
+
+                </button>
+
+                <button
+                    class="btn btn-danger btn-sm"
+                    onclick="deleteActivity(${item.id})">
+
+                    삭제
+
+                </button>
+
+            </td>
 
         </tr>
+
     `).join("");
 
 }
 
+// =========================================
+// 조부모 검색 콤보
+// =========================================
 
-document.addEventListener("DOMContentLoaded", () => {
-document
-    .getElementById("btnSearch")
-    .addEventListener(
-        "click",
-        loadActivities
-    );
-    loadActivities();
+async function loadGrandparentFilter() {
 
-    document
-        .getElementById("btnAddActivity")
-        .addEventListener("click", openActivityForm);
+    const select =
+        document.getElementById("searchGrandparent");
 
-});
+    if (!select) return;
 
-window.deleteActivity = async function(id){
+    const {
 
-    if(!confirm("삭제하시겠습니까?")) return;
+        data,
+
+        error
+
+    } = await supabaseClient
+
+        .from("grandparents")
+
+        .select("id,name")
+
+        .eq("status", "active")
+
+        .order("name");
+
+    if (error) {
+
+        console.error(error);
+
+        return;
+
+    }
+
+    select.innerHTML = `
+
+        <option value="">
+
+            전체
+
+        </option>
+
+    `;
+
+    data.forEach(gp => {
+
+        select.innerHTML += `
+
+            <option value="${gp.id}">
+
+                ${gp.name}
+
+            </option>
+
+        `;
+
+    });
+
+}
+
+// =========================================
+// 활동 삭제
+// =========================================
+
+window.deleteActivity = async function (id) {
+
+    if (!confirm("삭제하시겠습니까?")) {
+
+        return;
+
+    }
 
     const { error } = await supabaseClient
 
@@ -160,9 +354,11 @@ window.deleteActivity = async function(id){
 
         .delete()
 
-        .eq("id",id);
+        .eq("id", id);
 
-    if(error){
+    if (error) {
+
+        console.error(error);
 
         alert(error.message);
 
@@ -170,6 +366,18 @@ window.deleteActivity = async function(id){
 
     }
 
-    loadActivities();
+    await loadActivities();
+
+}
+
+// =========================================
+// 활동 수정
+// =========================================
+
+window.editActivity = function (id) {
+
+    currentActivityId = id;
+
+    openActivityForm();
 
 }

@@ -1,0 +1,282 @@
+/* =========================================
+   Search Area
+========================================= */
+
+.search-area{
+
+    display:flex;
+
+    align-items:flex-end;
+
+    gap:16px;
+
+    flex-wrap:wrap;
+
+}
+
+.search-group{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:6px;
+
+}
+
+.search-group label{
+
+    font-size:14px;
+
+    color:#666;
+
+    font-weight:600;
+
+}
+
+.search-group .input{
+
+    width:180px;
+
+}
+
+/* =========================================
+   Summary
+========================================= */
+
+.summary-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:20px;
+
+    margin-bottom:24px;
+
+}
+
+.summary-card{
+
+    background:#f8fafc;
+
+    border:1px solid #e5e7eb;
+
+    border-radius:10px;
+
+    padding:18px;
+
+    text-align:center;
+
+}
+
+.summary-title{
+
+    color:#666;
+
+    font-size:14px;
+
+    margin-bottom:10px;
+
+}
+
+.summary-value{
+
+    font-size:28px;
+
+    font-weight:700;
+
+    color:#2563eb;
+
+}
+
+/* =========================================
+   Payment Table
+========================================= */
+
+.table{
+
+    width:100%;
+
+    min-width:1300px;
+
+    border-collapse:collapse;
+
+}
+
+.table th{
+
+    background:#f8fafc;
+
+    color:#555;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    padding:14px 12px;
+
+    border-bottom:2px solid #e5e7eb;
+
+    white-space:nowrap;
+
+}
+
+.table td{
+
+    padding:14px 12px;
+
+    border-bottom:1px solid #eeeeee;
+
+    vertical-align:middle;
+
+    white-space:nowrap;
+
+}
+
+.table tbody tr:hover{
+
+    background:#f9fbff;
+
+}
+
+/* =========================================
+   Payment Status
+========================================= */
+
+.status-pass{
+
+    color:#2563eb;
+
+    font-weight:700;
+
+}
+
+.status-fail{
+
+    color:#dc2626;
+
+    font-weight:700;
+
+}
+
+/* =========================================
+   Amount
+========================================= */
+
+.payment-amount{
+
+    font-weight:700;
+
+    color:#16a34a;
+
+    text-align:right;
+
+}
+
+.reason{
+
+    color:#888;
+
+    font-size:13px;
+
+}
+
+/* =========================================
+   Empty Row
+========================================= */
+
+.empty-row{
+
+    text-align:center;
+
+    color:#888;
+
+    padding:30px !important;
+
+}
+
+/* =========================================
+   Button Area
+========================================= */
+
+.page-card:last-child{
+
+    margin-top:24px;
+
+}
+
+.page-card:last-child .btn{
+
+    min-width:190px;
+
+}
+
+/* =========================================
+   Responsive
+========================================= */
+
+@media (max-width:1400px){
+
+    .summary-grid{
+
+        grid-template-columns:
+            repeat(2,1fr);
+
+    }
+
+}
+
+@media (max-width:1000px){
+
+    .search-area{
+
+        flex-direction:column;
+
+        align-items:stretch;
+
+    }
+
+    .search-group .input{
+
+        width:100%;
+
+    }
+
+    .summary-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+/* =========================================
+   Horizontal Scroll
+========================================= */
+
+.page-card{
+
+    overflow-x:auto;
+
+}
+
+.table{
+
+    min-width:1250px;
+
+}
+
+/* =========================================
+   Sticky Header
+========================================= */
+
+.table thead th{
+
+    position:sticky;
+
+    top:0;
+
+    z-index:1;
+
+}
