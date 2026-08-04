@@ -143,9 +143,28 @@ async function saveGrandchild(grandchild = null) {
 
     } else {
 
-        result = await supabaseClient
-            .from("grandchildren")
-            .insert(data);
+        const { data: inserted, error } = await supabaseClient
+    .from("grandchildren")
+    .insert(data)
+    .select()
+    .single();
+
+if (error) {
+
+    alert(error.message);
+
+    return;
+
+}
+
+const qrCode = `GC-${String(inserted.id).padStart(6, "0")}`;
+
+await supabaseClient
+    .from("grandchildren")
+    .update({
+        qr_code: qrCode
+    })
+    .eq("id", inserted.id);
 
     }
 

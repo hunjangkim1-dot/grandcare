@@ -127,11 +127,12 @@ const Modal = {
 
         const {
 
-            title = "",
-            body = "",
-            confirmText = "저장",
-            cancelText = "취소",
-            onConfirm = null
+           title = "",
+    body = "",
+    confirmText = "저장",
+    cancelText = "취소",
+    onConfirm = null,
+    onOpen = null
 
         } = options;
 
@@ -146,6 +147,16 @@ const Modal = {
         document.getElementById("gc-modal-cancel").textContent = cancelText;
 
         this.overlay.style.display = "flex";
+
+if (typeof onOpen === "function") {
+
+    setTimeout(() => {
+
+        onOpen();
+
+    }, 0);
+
+}
 
     },
 

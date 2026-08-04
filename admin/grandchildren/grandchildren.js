@@ -129,8 +129,8 @@ function renderTable(list) {
 
             <td>
 
-                <button
-    class="btn btn-sm btn-primary"
+               <button
+    class="btn btn-secondary btn-sm"
     onclick="editGrandchild(${item.id})">
 
     수정
@@ -138,7 +138,15 @@ function renderTable(list) {
 </button>
 
 <button
-    class="btn btn-sm btn-danger"
+    class="btn btn-primary btn-sm"
+    onclick="showQr('${item.qr_code}','${item.name}')">
+
+    QR 보기
+
+</button>
+
+<button
+    class="btn btn-danger btn-sm"
     onclick="deleteGrandchild(${item.id})">
 
     삭제
@@ -203,5 +211,245 @@ async function deleteGrandchild(id) {
     }
 
     loadGrandchildren();
+
+}
+
+function showQr(qrCode, name){
+
+    Modal.open({
+
+        title: "QR 코드",
+
+        body: `
+            <div style="text-align:center">
+
+                <h3>${name}</h3>
+
+                <div id="qrArea"
+                     style="margin:20px auto;"></div>
+
+                <div style="
+                    margin-top:15px;
+                    font-size:18px;
+                    font-weight:700;
+                ">
+                    ${qrCode}
+                </div>
+
+            </div>
+        `,
+
+        confirmText:"닫기",
+
+        showCancel:false,
+
+        onOpen:()=>{
+
+            new QRCode(
+
+                document.getElementById("qrArea"),
+
+                {
+                    text:qrCode,
+                    width:220,
+                    height:220
+                }
+
+            );
+
+        }
+
+    });
+
+}
+
+function showQr(qrCode, name) {
+
+    Modal.open({
+
+        title: "손주 QR",
+
+        body: `
+
+            <div style="text-align:center">
+
+                <h3 style="margin-bottom:20px;">
+                    ${name}
+                </h3>
+
+                <div id="qrArea"></div>
+
+                <div style="
+                    margin-top:20px;
+                    font-size:20px;
+                    font-weight:700;
+                ">
+                    ${qrCode}
+                </div>
+
+            </div>
+
+        `,
+
+        confirmText: "닫기",
+
+        cancelText: "",
+
+       onConfirm(){
+
+    printQr(qrCode,name);
+
+},
+
+        onOpen() {
+
+            new QRCode(
+
+                document.getElementById("qrArea"),
+
+                {
+
+                    text: qrCode,
+
+                    width: 180,
+
+                    height: 180
+
+                }
+
+            );
+
+        }
+
+    });
+
+}
+
+function printQr(qrCode, name){
+
+    const win = window.open("", "_blank");
+
+    win.document.write(`
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>QR 출력</title>
+
+<style>
+
+body{
+
+    font-family:"Malgun Gothic";
+
+    text-align:center;
+
+    padding:50px;
+
+}
+
+h1{
+
+    font-size:32px;
+
+}
+
+h2{
+
+    margin-top:40px;
+
+}
+
+#qrcode{
+
+    margin:40px auto;
+
+    width:250px;
+
+}
+
+.info{
+
+    margin-top:25px;
+
+    font-size:20px;
+
+}
+
+.notice{
+
+    margin-top:40px;
+
+    color:#666;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>조부모 손주돌봄수당</h1>
+
+<h2>${name}</h2>
+
+<div id="qrcode"></div>
+
+<div class="info">
+
+관리번호<br>
+
+<b>${qrCode}</b>
+
+</div>
+
+<div class="notice">
+
+활동 시작과 종료 시
+
+QR을 촬영하세요.
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<script>
+
+new QRCode(
+
+document.getElementById("qrcode"),
+
+{
+
+text:"${qrCode}",
+
+width:250,
+
+height:250
+
+}
+
+);
+
+setTimeout(()=>{
+
+window.print();
+
+},500);
+
+</script>
+
+</body>
+
+</html>
+
+`);
+
+    win.document.close();
 
 }
